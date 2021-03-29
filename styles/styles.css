@@ -1,0 +1,255 @@
+body{
+    color: #FF3060;
+
+    font-family: 'Acme', sans-serif;
+    font-family: 'Della Respira', serif;
+    font-family: 'Fredoka One', cursive;
+}
+
+#Checkbox{
+    display: flex;
+}
+
+.desaparecer{
+    display: none;
+}
+
+.aparecer{
+    display: block;
+}
+
+#tienda{
+    padding-top: 2em;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.card{
+    margin-bottom: 2em;
+}
+
+.group{
+    background-color: green;
+    color: white;
+    text-align: center;
+}
+
+.group-dos{
+    background-color: red;
+    color: white;
+    text-align: center;
+}
+
+.logoDos{
+    height: 29vh;
+}
+
+#logos{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #ee025b;
+    /* ffc749 */
+}
+
+.logoPrincipal{
+   margin-right: 50px;
+}
+
+.svg{
+    height: 50px;
+   /*  margin-right: 80px;
+    cursor: pointer; */
+} 
+
+.main-contacto{
+    display: flex;
+    justify-content: space-between;
+    /* align-items: center; */
+}
+
+#cat{
+   max-width: 50vw;
+}
+
+.alert{
+    width: 50vw;
+    align-content: stretch;
+    text-align: center;
+    height: 60vh;
+}
+
+.alerta-cat{
+    height: 20vh;
+    margin-bottom: 2em;
+}
+
+.div-carrito{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-right: 80px;
+    cursor: pointer;
+    margin-top: 1em;
+
+}
+
+#Comprar{
+    background-color: blue;
+    min-height: 30vw;
+}
+
+.imagen-tabla{
+    height: 15vh;
+}
+
+h4{
+    color: white;
+}
+
+footer{
+    background-color: rgb(71, 71, 71);
+    color: white;
+    margin-top: 3em;
+    height: 60vh;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.nav-footer a{
+    color: rgb(241, 33, 68);
+}
+
+.div-main{
+    height: 100vh;
+    background-color: #ffc749;
+    background-image: url(https://image.freepik.com/foto-gratis/accesorios-mascotas-comida-juguetes-fondo-blanco-endecha-plana-vista-superior_46208-77.jpg);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.div-main-dos{
+    height: 70vh;
+    background-color: #FF3060;
+    color: white;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}
+
+.info-empresa{
+    display: flex;
+    justify-content: space-around;
+}
+
+.div-main-tres{
+    margin-top: 2em;
+    background-image: url(https://www.america-retail.com/static//2020/11/Banner-1.png);
+    height: 50vh;
+}
+
+.div-main-cuatro{
+    margin-top: 2em;
+    background-image: url(https://www.catycan.com/consejos/wp-content/uploads/2018/01/banner-blog-1.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    height: 50vh;
+}
+
+.contact-main{
+    /* margin-top: 2em; */
+    background-image: url(https://cdn.shopify.com/s/files/1/0219/0563/7456/articles/El_bano_de_tus_mascotas_1000_470_1600x.png?v=1569096090);
+    height: 60vh;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#cart{
+    color: white;
+    width: 5vw;
+}
+
+.redes-sociales{
+    height: 5vh;
+}
+
+#redes-sociales p{
+    text-align: center;
+}
+
+#nosotros{
+    width: 20vw;
+}
+
+.card{
+    width: 18rem;
+}
+
+.art{
+    width: 37vw;
+    height: 25vh;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border: solid 1px;
+}
+
+.drop{
+    margin-right: 3em;
+}
+
+.zona-main{
+    height: 60vh;
+    /* background-color: #ffc749; */
+    background-image: url(https://irp-cdn.multiscreensite.com/eb2d73a5/MOBILE/images/cc7f6d98-59eb-4ef6-bfb9-0fad94572fbc.jpg?1449841966232&v=7.3.45002);
+    background-repeat: no-repeat;
+    background-size: cover;
+    /* background-position: center; */
+
+}
+
+.zona-farmacia{
+    background-image: url(https://t3.ftcdn.net/jpg/03/13/94/56/240_F_313945655_U5H0O4sWNplT4DaYHFUkYkqJxqFmrwhC.jpg);
+    height: 60vh;
+    background-position: 80% 20%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+
+.zona-juguetes{
+    background-image: url(https://thumbs.dreamstime.com/b/juguetes-para-el-perro-y-gato-de-animales-dom%C3%A9sticos-accesorios-del-caucho-la-materia-textil-en-espacio-madera-oscuro-copia-111030119.jpg);
+    background-position: bottom left;
+    background-size: cover;
+    height: 50vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* .tienda-juguete{
+    background-image: url(https://i.pinimg.com/originals/b7/be/60/b7be605253603255299649c011cd578f.jpg);
+    
+} */
+
+
+#formulario{
+    width: 60vh;
+    margin-left: 10em;
+}
+
+
+
+
+
+
+
