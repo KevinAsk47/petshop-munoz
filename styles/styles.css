@@ -131,13 +131,18 @@ footer{
     align-items: center;
 }
 .div-main-dos{
-    height: 70vh;
     background-color: #FF3060;
     color: white;
     display: flex;
     text-align: center;
     align-items: center;
     justify-content: center;
+}
+
+.Nosotros{
+    display: flex;
+    justify-content: center;
+    width: 70vw;
 }
 
 .info-empresa{
@@ -236,20 +241,20 @@ footer{
     align-items: center;
 }
 
-.tienda-juguete{
+/* .tienda-juguete{
     background-image: url(https://i.pinimg.com/originals/b7/be/60/b7be605253603255299649c011cd578f.jpg);
     
-} 
-
-#aads{
-    margin: 0;
-}
+}  */
 
 #formulario{
     width: 60vh;
     margin-left: 10em;
 }
 
+.zona{
+    display: flex;
+    justify-content: space-around;
+}
 
 
 
