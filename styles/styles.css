@@ -1,6 +1,14 @@
+.row{
+    margin: 0;
+    padding: 0;
+}
+.container-fluid{
+    margin: 0;
+    padding: 0;
+}
+
 body{
     color: #FF3060;
-
     font-family: 'Acme', sans-serif;
     font-family: 'Della Respira', serif;
     font-family: 'Fredoka One', cursive;
@@ -30,8 +38,7 @@ body{
 }
 
 .group{
-    background-color: green;
-    color: white;
+    color: black;
     text-align: center;
 }
 
@@ -92,7 +99,6 @@ body{
     margin-right: 80px;
     cursor: pointer;
     margin-top: 1em;
-
 }
 
 #Comprar{
@@ -256,6 +262,13 @@ footer{
     justify-content: space-around;
 }
 
+.navbar-brand{
+    padding: 0 0 0 2em;
+}
+
+#search{
+    margin-right: 2em;
+}
 
 
 

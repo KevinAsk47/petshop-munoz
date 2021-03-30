@@ -1,14 +1,16 @@
-if (document.getElementById("Juguetes") || document.getElementById("farmacia")) {
-    fetchDates()
-}else{
-    fetchDates()
+if (document.getElementById("juguetes")) {
+    fetchDates("Juguete")
+}else if (document.getElementById("farmacia")) {
+    fetchDates("Medicamento")
 }
 
-
-async function fetchDates() {
+async function fetchDates(seccion) {
     try {
         var respuesta = await fetch("https://apipetshop.herokuapp.com/api/articulos")
         var data = await respuesta.json()
+
+        var juguetes = data.response.filter((juguete) => juguete.tipo == seccion )
+        var medicamentos = data.response.filter((medicamento) => medicamento.tipo == seccion )
 
         myProgram(data)
     } catch (error) {
@@ -28,37 +30,36 @@ function notificacion() {
     var toastElement = new bootstrap.Toast(toastHtmlElement , option)
 
     toastElement.show()
-
-    /* document.getElementById("texto-producto").innerHTML = ""  */
 }
 
+function formulario() {
+    const cat = document.getElementById("cat")
+    const form = document.getElementById("formulario")
+    const alerta = document.getElementById("alert")
+
+    form.addEventListener("submit", (event) => {
+        
+        event.preventDefault();
+
+        if (alerta.className == "desaparecer") {
+            alerta.className = "aparecer" 
+            cat.className = "desaparecer" 
+        }
+
+        setTimeout(() => {
+            alerta.className = "desaparecer"
+           /*  cat.className = "aparecer" */
+            location.reload()
+        },2000)
+
+    }) 
+} 
+
+if (document.getElementById("contacto")) {
+    formulario()
+}
 
 function myProgram(data) {
-
-    function formulario() {
-        const cat = document.getElementById("cat")
-        const form = document.getElementById("formulario")
-        const alerta = document.getElementById("alert")
-
-        form.addEventListener("submit", (event) => {
-            event.preventDefault();
-
-            if (alerta.className == "desaparecer") {
-                alerta.className = "aparecer" 
-                cat.className = "desaparecer"  
-            }
-
-            setTimeout(() => {
-                alerta.className = "desaparecer"
-                cat.className = "aparecer"
-            },5000)
-        }) 
-    } 
-
-    if (document.getElementById("contacto")) {
-        formulario()
-    }
-
     const tienda = document.getElementById("tienda")
 
     const articulos = data.response
@@ -67,28 +68,28 @@ function myProgram(data) {
     var medicamentos = articulos.filter((medicamento) => medicamento.tipo == "Medicamento" )
 
     function DibujarArticulos(array,tienda,stock,clase) {
+
         array.forEach(articulo => {
 
             var tarjeta = document.createElement("div")
             tarjeta.className = "card"
 
-            tarjeta.innerHTML =`
+            tarjeta.innerHTML +=`
                 <div style="margin-bottom: 1em;">
-                <img style="" src="${articulo.imagen}" class="card-img-top" alt="...">
+                <img src="${articulo.imagen}" class="card-img-top" alt="...">
                 </div>
                 <div class="card-body">
                 <div style="text-align: center;color: black;margin-bottom: 1em;border-bottom: 1px solid;height: 12vh;">
                 <h5 class="card-title p">${articulo.nombre}</h5>
                 </div>
-                <div style="text-align: center;height: 50vh;">
-                <p class="card-text">${articulo.descripcion}</p>
+                <span class="d-inline-block" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="${articulo.descripcion}">
+                <button style="margin-left: 25px" class="btn btn-primary" type="button" disabled>información del producto</button>
+                </span>
                 </div>
-                </div>
-                <ul class="list-group list-group-flush">
-                <li class="list-group-item">${articulo.tipo}</li>
+                <div class="list-group list-group-flush">
                 <li class="list-group-item precio">Precio: $${articulo.precio}</li>
                 <li class="${clase}">${articulo.stock} ${stock}</li>
-                </ul>
+                </div>
                 <div class="card-body">
 
                 <form id="${articulo._id}" class="row gy-2 gx-3 align-items-center" style="padding: 0; margin: 0;">
@@ -124,10 +125,11 @@ function myProgram(data) {
 
                 let boton = event.target.id
 
-                let filtrarArticulo = articulos.filter((articulo) => articulo._id == boton)
+                    let filtrarArticulo = articulos.filter((articulo) => articulo._id == boton)
+                    dibujarTabla(filtrarArticulo,contador)  
 
-                dibujarTabla(filtrarArticulo,contador)
-
+                    document.getElementById("cart").innerHTML = `Carrito(${contador})`
+                   
             })
             
         })
@@ -160,11 +162,11 @@ function myProgram(data) {
     })
 
     if (document.getElementById("juguetes")) {
-        DibujarArticulos(juguetesSinStock ,tienda,"Ultimas unidades!!!","group-dos")
-        DibujarArticulos(juguetesConStock,tienda,"Stock","group")
+        DibujarArticulos(juguetesSinStock ,tienda,"Ultima/s unidades!!!","group-dos")
+        DibujarArticulos(juguetesConStock,tienda,"Unidades","group")
     }else if (document.getElementById("farmacia")) {
-        DibujarArticulos(medicamentosSinStock ,tienda,"Ultimas unidades!!!","group-dos")
-        DibujarArticulos(medicamentosConStock,tienda,"Stock","group")
+        DibujarArticulos(medicamentosSinStock ,tienda,"Ultima/s unidades!!!","group-dos")
+        DibujarArticulos(medicamentosConStock,tienda,"Unidades","group")
     } 
 
     // Carrito -----------------------------------------------------------------------
@@ -173,12 +175,16 @@ function myProgram(data) {
 
     function dibujarTabla(array,numero) {
 
+    if (array.length === 0) {
+        
+        tabla.innerHTML = `<p id="texto" class="art algo">No hay articulos disponibles</p>`
+    }else{
 
         array.forEach(articulo => {
             var art= document.createElement("tr")
             art.className = "art"
-            
-            art.innerHTML =
+            tabla.innerHTML = ""
+            art.innerHTML +=
             `<tr>
                 <td><img class="imagen-tabla" src="${articulo.imagen}"/></td>
                 <td>${articulo.nombre}</td>
@@ -197,9 +203,8 @@ function myProgram(data) {
 
                 if (contadorDos > 0) {
                     contadorDos = contadorUno - contadorDos
-            
-                    document.getElementById("cart").innerHTML = `Carrito(${contadorDos})`
 
+                    document.getElementById("cart").innerHTML = `Carrito(${contadorDos})`
                 }
 
             })
@@ -207,20 +212,38 @@ function myProgram(data) {
 
         }) 
     }
+    }
 
     var contadorUno = 0
 
-    //notificacion
+    //ver mas
 
- /*    function prueba(params) {
+    var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+    var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+    return new bootstrap.Popover(popoverTriggerEl)
+    })
 
-        if (contadorUno === 0) {
+    //search
 
-            document.getElementById("texto-producto").innerHTML = `<p id="texto" class="art">No hay articulos</p>`
-            
+    var search = document.getElementById("search")
 
+    function filtrarNombres(nombres) {
+        let filtrarNombres = articulos.filter((articulo) => articulo.nombre == nombres)
+        return filtrarNombres
+      }
+      
+    search.addEventListener("submit", (event) => {
+        event.preventDefault();
+        var searchValue = document.getElementById("searchValue").value
+        tienda.innerHTML = ""
+      
+        if (searchValue) {
+          var articulosFiltrados = filtrarNombres(searchValue)
+
+          DibujarArticulos(articulosFiltrados,tienda,"Unidades","group")
+        }else{
+            location.reload()
         }
-
-    } */
+      })
 
 }
