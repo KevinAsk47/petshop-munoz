@@ -1,16 +1,13 @@
 if (document.getElementById("juguetes")) {
-    fetchDates("Juguete")
+    fetchDates()
 } else if (document.getElementById("farmacia")) {
-    fetchDates("Medicamento")
+    fetchDates()
 }
 
-async function fetchDates(seccion) {
+async function fetchDates() {
     try {
         var respuesta = await fetch("https://apipetshop.herokuapp.com/api/articulos")
         var data = await respuesta.json()
-
-        var juguetes = data.response.filter((juguete) => juguete.tipo == seccion)
-        var medicamentos = data.response.filter((medicamento) => medicamento.tipo == seccion)
 
         myProgram(data)
     } catch (error) {
@@ -271,7 +268,5 @@ function myProgram(data) {
             location.reload()
         }
     })
-
-    console.log(carroDeCompras)
 
 }
