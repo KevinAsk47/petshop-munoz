@@ -21,7 +21,7 @@
             <img class="logoDos" src="./img/kisspng-miniature-schnauzer-puppy-cartoon-clip-art-puppy-5a98dd5dbc8836.1224053215199675817722.png" alt="" srcset="">
             <img class="logoPrincipal" src="./img/logito.png" alt="" srcset="">
             <div class="div-carrito">
-              <a href="./carrito.html"><img class="svg" src="./img/carros.svg" alt="" srcset=""></a><p id="cart">Carrito(0)</p>
+              <a href="#"><img class="svg" src="./img/carros.svg" alt="" srcset=""></a><p id="cart">Carrito(0)</p>
             </div>
           </div>
             <nav>
@@ -34,10 +34,10 @@
                       <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                           <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="./index.html">🏠Home</a>
+                            <a class="nav-link" aria-current="page" href="./index.html">🏠Home</a>
                           </li>
                           <li class="nav-item">
-                            <a class="nav-link" href="#">📞Contactanos</a>
+                            <a class="nav-link active" href="#">📞Contactanos</a>
                           </li>
                           <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -59,7 +59,8 @@
         <main>
           <div class="main-contacto mt-4">
           <div>
-            <form id="formulario" class="row g-3 col-10">
+            <form style="border: black 2px solid;border-radius: 5%;" id="formulario" class="row g-3 col-10">
+              <p style="text-align: center; color: black;background-color: coral;border-radius: 5%;">Dejanos tu consulta</p>
                 <div class="col-md-6">
                   <label for="validationDefault01" class="form-label">Nombre</label>
                   <input type="text" class="form-control" id="validationDefault01" placeholder="Kevin" required>
@@ -70,7 +71,7 @@
                 </div>
                 <div class="col-md-12">
                   <label for="validationDefault03" class="form-label">Telefono</label>
-                  <input type="number" class="form-control" id="validationDefault03" placeholder="Ej: +54 1123-5678" required>
+                  <input type="text" class="form-control" id="validationDefault03" placeholder="Ej: +54 1123-5678" required>
                 </div>
                 <div id="Checkbox">
                 <div class="form-check">
@@ -96,7 +97,8 @@
                     <label for="exampleFormControlTextarea1" class="form-label">Dejanos tu consulta:</label>
                     <textarea class="form-control" id="exampleFormControlTextarea1" rows="4" placeholder="Dinos en que te podemos ayudar" required></textarea>
                   </div>
-                <div class="col-10">
+                <div style="display: flex;align-items: center;justify-content: center;
+                padding-bottom: 1em;" class="col-12">
                   <button id="boton" class="btn btn-primary" type="submit">Enviar</button>
                 </div>
               </form>
@@ -104,12 +106,15 @@
           <div>
             <img id="cat" class="cat aparecer" src="./img/cat-white-background.jpg" alt="">
           </div>
+          <div id="gif" class="desaparecer col-12">
+            <img src="https://www.cinuk.mx/shared/img/enviandoDatos.gif" alt="">
+          </div>
           <div id="alert" class="desaparecer">
             <div class="col-12">
               <div class=" alert alert-success" role="alert">
                   <h4 class="alert-heading">Tu mensaje fue enviado correctamente</h4>
                   <img class="alerta-cat" src="./img/pngwing.com.png" alt="">
-                  <p>Aww yeah, you successfully read this important alert message. This example text is going to run a bit longer so that you can see how spacing within an alert works with this kind of content.</p>
+                  <p>Gracias por contactarse, hemos recibido su mensaje. Le responderemos a la brevedad.</p>
                   <hr>
                   <p class="mb-0">!Muchas Gracias por escribirnos¡</p>
               </div>
@@ -124,9 +129,13 @@
             <a class="nav-link" href="./farmacia.html">Farmacia</a>
             <a class="nav-link" href="./juguetes.html">Juguetes</a>
           </nav>
-          <div id="nosotros">
-            <h3>Nosotros</h3>
-            <p>En FRANCO PET-SHOP sabemos lo importante que es tu mascota para vos. Vive, duerme, juega y camina a tu lado. Tu mejor compañía te acepta tal cual sos y, a cambio, te ofrece todo su amor e incondicionalidad. Tu única responsabilidad es cuidarla y quererla.</p>
+          <div>
+            <h3>Envíos</h3>
+            <p>Delivery CABA</p>
+            <p>Delivery Zona Norte</p>  
+            <p>Delivery Zona Oeste</p>
+            <p>Envíos a Todo el País</p>
+            <p>Sitema</p>
           </div>
           <div id="redes-sociales">
             <h3>Redes Sociales</h3>

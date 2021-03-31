@@ -36,21 +36,30 @@ function formulario() {
     const cat = document.getElementById("cat")
     const form = document.getElementById("formulario")
     const alerta = document.getElementById("alert")
+    const gif = document.getElementById("gif")
 
     form.addEventListener("submit", (event) => {
         
         event.preventDefault();
 
         if (alerta.className == "desaparecer") {
-            alerta.className = "aparecer" 
-            cat.className = "desaparecer" 
+
+            gif.className = "aparecer"
+            cat.className = "desaparecer"
         }
 
         setTimeout(() => {
+            gif.className = "desaparecer"
+            alerta.className = "aparecer"
+        },3500)
+
+        setTimeout(() => {
+
+            document.getElementById("formulario").reset()
+            cat.className = "aparecer"
             alerta.className = "desaparecer"
-           /*  cat.className = "aparecer" */
-            location.reload()
-        },2000)
+            
+        },5000) 
 
     }) 
 } 
@@ -74,7 +83,7 @@ function myProgram(data) {
             var tarjeta = document.createElement("div")
             tarjeta.className = "card"
 
-            tarjeta.innerHTML +=`
+            tarjeta.innerHTML =`
                 <div style="margin-bottom: 1em;">
                 <img src="${articulo.imagen}" class="card-img-top" alt="...">
                 </div>
@@ -108,6 +117,13 @@ function myProgram(data) {
 
             var contador = 0
 
+            let repetidos = [...articulos]
+
+            repetidos.forEach((rep) => {
+                rep["valor"] = true
+            })
+
+
             document.getElementById(articulo._id).addEventListener("submit", function (event) {
 
                 event.preventDefault()
@@ -118,18 +134,52 @@ function myProgram(data) {
             
                     contadorUno = contadorUno + parseFloat(formInput)
                     contador = contador + parseFloat(formInput)
-                    
-                    document.getElementById("cart").innerHTML = `Carrito(${contadorUno})`
-            
                 } 
 
                 let boton = event.target.id
 
-                    let filtrarArticulo = articulos.filter((articulo) => articulo._id == boton)
-                    dibujarTabla(filtrarArticulo,contador)  
+                /* let filtrarArticulo = repetidos.filter((articulo) => articulo._id == boton) */
 
-                    document.getElementById("cart").innerHTML = `Carrito(${contador})`
-                   
+                repetidos.forEach((articulo) => {
+                    if (articulo._id == boton) {
+                        articulo.valor = false
+                    }
+                    return articulo
+                })
+
+                console.log(articulo.valor)
+
+                let filtrarArticulo = repetidos.find((articulo) => articulo.valor == false)
+
+                console.log([filtrarArticulo])
+
+                dibujarTabla(filtrarArticulo,contador)
+
+                
+/* 
+                if (articulo.valor === false) {
+
+                    dibujarTabla([articulo],contador)
+    
+                    document.getElementById("cart").innerHTML = `Carrito(${contadorUno})`
+                    
+                } */
+
+ 
+                    
+                
+
+                    
+
+
+
+               /*  if (!prueba) {
+                    console.log("hola") 
+                    
+                }else{
+                    console.log("chau")
+                } */  
+
             })
             
         })
@@ -181,10 +231,12 @@ function myProgram(data) {
     }else{
 
         array.forEach(articulo => {
-            var art= document.createElement("tr")
+            var art = document.createElement("tr")
             art.className = "art"
+
             tabla.innerHTML = ""
-            art.innerHTML +=
+
+            art.innerHTML =
             `<tr>
                 <td><img class="imagen-tabla" src="${articulo.imagen}"/></td>
                 <td>${articulo.nombre}</td>
@@ -209,12 +261,11 @@ function myProgram(data) {
 
             })
 
-
         }) 
     }
     }
 
-    var contadorUno = 0
+    var contadorUno = 0 
 
     //ver mas
 
