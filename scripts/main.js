@@ -1,6 +1,6 @@
 if (document.getElementById("juguetes")) {
     fetchDates("Juguete")
-}else if (document.getElementById("farmacia")) {
+} else if (document.getElementById("farmacia")) {
     fetchDates("Medicamento")
 }
 
@@ -9,25 +9,25 @@ async function fetchDates(seccion) {
         var respuesta = await fetch("https://apipetshop.herokuapp.com/api/articulos")
         var data = await respuesta.json()
 
-        var juguetes = data.response.filter((juguete) => juguete.tipo == seccion )
-        var medicamentos = data.response.filter((medicamento) => medicamento.tipo == seccion )
+        var juguetes = data.response.filter((juguete) => juguete.tipo == seccion)
+        var medicamentos = data.response.filter((medicamento) => medicamento.tipo == seccion)
 
         myProgram(data)
     } catch (error) {
-         miProgram([]) 
+        miProgram([])
     }
 }
 
 var option = {
-    animation : true,
-    delay : 1000,
+    animation: true,
+    delay: 1000,
 }
 
-function notificacion() { 
+function notificacion() {
 
     var toastHtmlElement = document.getElementById("liveToast")
 
-    var toastElement = new bootstrap.Toast(toastHtmlElement , option)
+    var toastElement = new bootstrap.Toast(toastHtmlElement, option)
 
     toastElement.show()
 }
@@ -39,7 +39,7 @@ function formulario() {
     const gif = document.getElementById("gif")
 
     form.addEventListener("submit", (event) => {
-        
+
         event.preventDefault();
 
         if (alerta.className == "desaparecer") {
@@ -51,18 +51,18 @@ function formulario() {
         setTimeout(() => {
             gif.className = "desaparecer"
             alerta.className = "aparecer"
-        },3500)
+        }, 3500)
 
         setTimeout(() => {
 
             document.getElementById("formulario").reset()
             cat.className = "aparecer"
             alerta.className = "desaparecer"
-            
-        },5000) 
 
-    }) 
-} 
+        }, 5000)
+
+    })
+}
 
 if (document.getElementById("contacto")) {
     formulario()
@@ -73,17 +73,25 @@ function myProgram(data) {
 
     const articulos = data.response
 
-    var juguetes = articulos.filter((juguete) => juguete.tipo == "Juguete" )
-    var medicamentos = articulos.filter((medicamento) => medicamento.tipo == "Medicamento" )
+    var juguetes = articulos.filter((juguete) => juguete.tipo == "Juguete")
+    var medicamentos = articulos.filter((medicamento) => medicamento.tipo == "Medicamento")
 
-    function DibujarArticulos(array,tienda,stock,clase) {
+    var contadorUno = 0
+
+    let repetidos = [...articulos]
+
+    repetidos.forEach((rep) => {
+        rep["valor"] = true
+    })
+
+    function DibujarArticulos(array, tienda, stock, clase) {
 
         array.forEach(articulo => {
 
             var tarjeta = document.createElement("div")
             tarjeta.className = "card"
 
-            tarjeta.innerHTML =`
+            tarjeta.innerHTML = `
                 <div style="margin-bottom: 1em;">
                 <img src="${articulo.imagen}" class="card-img-top" alt="...">
                 </div>
@@ -112,29 +120,22 @@ function myProgram(data) {
                 </form>
 
                 </div>
-            ` 
+            `
             tienda.appendChild(tarjeta)
 
             var contador = 0
-
-            let repetidos = [...articulos]
-
-            repetidos.forEach((rep) => {
-                rep["valor"] = true
-            })
-
 
             document.getElementById(articulo._id).addEventListener("submit", function (event) {
 
                 event.preventDefault()
 
                 let formInput = document.getElementById("A" + articulo._id).value
-            
+
                 if (formInput !== 0) {
-            
+
                     contadorUno = contadorUno + parseFloat(formInput)
                     contador = contador + parseFloat(formInput)
-                } 
+                }
 
                 let boton = event.target.id
 
@@ -143,45 +144,17 @@ function myProgram(data) {
                 repetidos.forEach((articulo) => {
                     if (articulo._id == boton) {
                         articulo.valor = false
+                        return articulo
                     }
-                    return articulo
                 })
+                console.log(articulo)
 
-                console.log(articulo.valor)
+                dibujarTabla(contador)
 
-                let filtrarArticulo = repetidos.find((articulo) => articulo.valor == false)
-
-                console.log([filtrarArticulo])
-
-                dibujarTabla(filtrarArticulo,contador)
-
-                
-/* 
-                if (articulo.valor === false) {
-
-                    dibujarTabla([articulo],contador)
-    
-                    document.getElementById("cart").innerHTML = `Carrito(${contadorUno})`
-                    
-                } */
-
- 
-                    
-                
-
-                    
-
-
-
-               /*  if (!prueba) {
-                    console.log("hola") 
-                    
-                }else{
-                    console.log("chau")
-                } */  
+                document.getElementById("cart").innerHTML = `Carrito(${contadorUno})`
 
             })
-            
+
         })
 
     }
@@ -212,66 +185,68 @@ function myProgram(data) {
     })
 
     if (document.getElementById("juguetes")) {
-        DibujarArticulos(juguetesSinStock ,tienda,"Ultima/s unidades!!!","group-dos")
-        DibujarArticulos(juguetesConStock,tienda,"Unidades","group")
-    }else if (document.getElementById("farmacia")) {
-        DibujarArticulos(medicamentosSinStock ,tienda,"Ultima/s unidades!!!","group-dos")
-        DibujarArticulos(medicamentosConStock,tienda,"Unidades","group")
-    } 
+        DibujarArticulos(juguetesSinStock, tienda, "Ultima/s unidades!!!", "group-dos")
+        DibujarArticulos(juguetesConStock, tienda, "Unidades", "group")
+    } else if (document.getElementById("farmacia")) {
+        DibujarArticulos(medicamentosSinStock, tienda, "Ultima/s unidades!!!", "group-dos")
+        DibujarArticulos(medicamentosConStock, tienda, "Unidades", "group")
+    }
 
     // Carrito -----------------------------------------------------------------------
 
     const tabla = document.getElementById("productos")
 
-    function dibujarTabla(array,numero) {
+    var carroDeCompras = repetidos.filter((elemento) => elemento.valor === false)
 
-    if (array.length === 0) {
-        
-        tabla.innerHTML = `<p id="texto" class="art algo">No hay articulos disponibles</p>`
-    }else{
+    function dibujarTabla(numero) {
 
-        array.forEach(articulo => {
-            var art = document.createElement("tr")
-            art.className = "art"
+        if (carroDeCompras.length === 0) {
 
-            tabla.innerHTML = ""
+            tabla.innerHTML = `<p id="texto" class="art algo">No hay articulos disponibles</p>`
+        } else {
 
-            art.innerHTML =
-            `<tr>
+            carroDeCompras.forEach(articulo => {
+
+                console.log("que pasa acaa")
+                var art = document.createElement("tr")
+                art.className = "art"
+
+                /* tabla.innerHTML = "" */
+
+                art.innerHTML =
+                    `<tr>
                 <td><img class="imagen-tabla" src="${articulo.imagen}"/></td>
                 <td>${articulo.nombre}</td>
-                <td>$${articulo.precio  * numero}</td>
+                <td>$${articulo.precio * numero}</td>
                 <td>x${numero}</td>
                 <td><button id="${articulo._id}" type="button" class="btn-close close" aria-label="Close"></button></td>
             </tr>`
 
-            tabla.appendChild(art)
+                tabla.appendChild(art)
 
-            var contadorDos = contadorUno
+                var contadorDos = contadorUno
 
-            document.getElementById(articulo._id).addEventListener("click", function (event) {
+                document.getElementById(articulo._id).addEventListener("click", function (event) {
 
-                this.parentElement.parentElement.remove()
+                    this.parentElement.parentElement.remove()
 
-                if (contadorDos > 0) {
-                    contadorDos = contadorUno - contadorDos
+                    if (contadorDos > 0) {
+                        contadorDos = contadorUno - contadorDos
 
-                    document.getElementById("cart").innerHTML = `Carrito(${contadorDos})`
-                }
+                        document.getElementById("cart").innerHTML = `Carrito(${contadorDos})`
+                    }
+
+                })
 
             })
-
-        }) 
+        }
     }
-    }
-
-    var contadorUno = 0 
 
     //ver mas
 
     var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
     var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
-    return new bootstrap.Popover(popoverTriggerEl)
+        return new bootstrap.Popover(popoverTriggerEl)
     })
 
     //search
@@ -281,20 +256,22 @@ function myProgram(data) {
     function filtrarNombres(nombres) {
         let filtrarNombres = articulos.filter((articulo) => articulo.nombre == nombres)
         return filtrarNombres
-      }
-      
+    }
+
     search.addEventListener("submit", (event) => {
         event.preventDefault();
         var searchValue = document.getElementById("searchValue").value
         tienda.innerHTML = ""
-      
-        if (searchValue) {
-          var articulosFiltrados = filtrarNombres(searchValue)
 
-          DibujarArticulos(articulosFiltrados,tienda,"Unidades","group")
-        }else{
+        if (searchValue) {
+            var articulosFiltrados = filtrarNombres(searchValue)
+
+            DibujarArticulos(articulosFiltrados, tienda, "Unidades", "group")
+        } else {
             location.reload()
         }
-      })
+    })
+
+    console.log(carroDeCompras)
 
 }
