@@ -213,12 +213,15 @@ footer{
 }
 
 .art{
-    width: 37vw;
+    width: 28vw;
     height: 25vh;
     display: flex;
     justify-content: space-around;
     align-items: center;
     border: solid 1px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border-radius: 5%;
 }
 
 .drop{
@@ -289,6 +292,54 @@ footer{
     height: 60vh;
 }
 
+.botonSumaResta{
+    border-radius: 80%;
+    background-color: #ffc749;
+}
+
+#zona-compras{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: black solid 5px;
+    border-radius: 10%;
+    min-height: 100vh;
+    width: 70vw;
+}
+
+#carrito{
+    margin-top: 3em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.total{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: black;
+    height: 10vh;
+    max-width: 50vw;
+}
+
+.totalDos{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: black;
+    height: 10vh;
+    width: 50vw;
+    border-radius: 30%;
+}
+
+.default{
+    background-color: green;
+}
+.error{
+    background-color: red;
+}
 
 
 

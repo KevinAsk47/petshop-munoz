@@ -2,6 +2,8 @@ if (document.getElementById("juguetes")) {
     fetchDates()
 } else if (document.getElementById("farmacia")) {
     fetchDates()
+}else if (document.getElementById("carro")) {
+    fetchDates()
 }
 
 async function fetchDates() {
@@ -11,23 +13,50 @@ async function fetchDates() {
 
         myProgram(data)
     } catch (error) {
-        miProgram([])
+
     }
 }
 
 var option = {
     animation: true,
-    delay: 1000,
+    delay: 8000,
 }
 
-function notificacion() {
+function notificacion(texto,clase) {
 
     var toastHtmlElement = document.getElementById("liveToast")
+    toastHtmlElement.className = `${clase}`
 
-    var toastElement = new bootstrap.Toast(toastHtmlElement, option)
+    toastHtmlElement.innerHTML = ""
+
+    toastHtmlElement.innerHTML += `
+    <div class="toast-header">
+    <strong class="me-auto">FRANCO PET-SHOP</strong>
+    </div>
+    <div class="toast-body" style="color: black;">
+    <span id="tostada" style="color: white;">${texto}</span>
+    </div>
+    `
+    var toastElement = new bootstrap.Toast(toastHtmlElement,option)
 
     toastElement.show()
 }
+
+var carritoDeCompras = 0
+
+if (localStorage.getItem("cart")) {
+
+    carritoDeCompras = parseInt(localStorage.getItem("cart")) 
+}
+
+function calculos(numero) {
+
+    document.getElementById("cart").innerHTML = `Carrito(${numero})`
+    document.getElementById("cartDos").innerHTML = `Carrito(${numero})`
+    localStorage.setItem("cart", JSON.stringify(numero))
+}
+
+calculos(carritoDeCompras) 
 
 function formulario() {
     const cat = document.getElementById("cat")
@@ -66,20 +95,33 @@ if (document.getElementById("contacto")) {
 }
 
 function myProgram(data) {
+
     const tienda = document.getElementById("tienda")
 
     const articulos = data.response
-
-    var juguetes = articulos.filter((juguete) => juguete.tipo == "Juguete")
-    var medicamentos = articulos.filter((medicamento) => medicamento.tipo == "Medicamento")
-
-    var contadorUno = 0
 
     let repetidos = [...articulos]
 
     repetidos.forEach((rep) => {
         rep["valor"] = true
+        rep["cantidad"] = 0
+        rep["contadorInterno"] = 0
     })
+
+    var juguetes = repetidos.filter((juguete) => juguete.tipo == "Juguete")
+    var medicamentos = repetidos.filter((medicamento) => medicamento.tipo == "Medicamento")
+
+    if (localStorage.getItem("respuestaApi")) {
+
+        repetidos = JSON.parse(localStorage.getItem("respuestaApi")) 
+    }
+
+    var total = 0
+
+    if (localStorage.getItem("total")) {
+
+        total = parseInt(localStorage.getItem("total")) 
+    }
 
     function DibujarArticulos(array, tienda, stock, clase) {
 
@@ -112,7 +154,7 @@ function myProgram(data) {
                     </div>
                     <div class="col-4">
                     <label class="visually-hidden" for="autoSizingInput">Name</label>
-                    <input id="A${articulo._id}" type="number" min="1" max="100" class="form-control input" value="1">
+                    <input id="A${articulo._id}" onlclick="pruebita()" type="number" min="1" max="100" class="form-control input" value="1">
                     </div>
                 </form>
 
@@ -120,42 +162,49 @@ function myProgram(data) {
             `
             tienda.appendChild(tarjeta)
 
-            var contador = 0
-
             document.getElementById(articulo._id).addEventListener("submit", function (event) {
 
                 event.preventDefault()
 
-                let formInput = document.getElementById("A" + articulo._id).value
+           /*      let formInput = document.getElementById("A" + articulo._id).value
 
                 if (formInput !== 0) {
 
                     contadorUno = contadorUno + parseFloat(formInput)
                     contador = contador + parseFloat(formInput)
-                }
+                } */
+
+                /* document.getElementById("cart").innerHTML = `Carrito(${contadorUno})`
+                document.getElementById("cartDos").innerHTML = `Carrito(${contadorUno})` */
 
                 let boton = event.target.id
 
-                /* let filtrarArticulo = repetidos.filter((articulo) => articulo._id == boton) */
-
                 repetidos.forEach((articulo) => {
-                    if (articulo._id == boton) {
-                        articulo.valor = false
-                        return articulo
+                    if (articulo._id === boton) {
+                        if (articulo.stock === articulo.contadorInterno) {
+                            notificacion(`Upss solo quedan ${articulo.stock} unidades`,"error")
+                        }else{
+                            articulo.valor = false
+                            articulo.cantidad = articulo.cantidad + 1
+                            articulo.contadorInterno = articulo.contadorInterno + 1 
+                            carritoDeCompras ++
+                            total = total + articulo.precio
+                            notificacion(`has agregado ${articulo.contadorInterno} elemento/s al carrito`,"default")
+                        }  
                     }
                 })
-                console.log(articulo)
 
-                dibujarTabla(contador)
-
-                document.getElementById("cart").innerHTML = `Carrito(${contadorUno})`
+                calculos(carritoDeCompras)
+                totalCalculos(total)
+                dibujarTabla()
+                localStorage.setItem("respuestaApi", JSON.stringify(repetidos)) 
 
             })
+            
 
         })
 
     }
-
 
     var juguetesSinStock = []
     var juguetesConStock = []
@@ -191,53 +240,121 @@ function myProgram(data) {
 
     // Carrito -----------------------------------------------------------------------
 
-    const tabla = document.getElementById("productos")
-
-    var carroDeCompras = repetidos.filter((elemento) => elemento.valor === false)
+    dibujarTabla()
 
     function dibujarTabla(numero) {
+        const tabla = document.getElementById("productos")
+
+        var carroDeCompras = repetidos.filter((elemento) => elemento.valor === false)
 
         if (carroDeCompras.length === 0) {
 
             tabla.innerHTML = `<p id="texto" class="art algo">No hay articulos disponibles</p>`
-        } else {
+        }else{
+
+            tabla.innerHTML = ""
 
             carroDeCompras.forEach(articulo => {
 
-                console.log("que pasa acaa")
-                var art = document.createElement("tr")
+                var art = document.createElement("div")
                 art.className = "art"
 
-                /* tabla.innerHTML = "" */
-
                 art.innerHTML =
-                    `<tr>
-                <td><img class="imagen-tabla" src="${articulo.imagen}"/></td>
-                <td>${articulo.nombre}</td>
-                <td>$${articulo.precio * numero}</td>
-                <td>x${numero}</td>
-                <td><button id="${articulo._id}" type="button" class="btn-close close" aria-label="Close"></button></td>
-            </tr>`
+                `
+                <div><img class="imagen-tabla" src="${articulo.imagen}"/></div>
+                <p id="P${articulo._id}">$${articulo.precio * articulo.cantidad}</p>
+                <p id="X${articulo._id}">x${articulo.cantidad}</p>
+                <div>
+                <button class ="botonSumaResta" id="S${articulo._id}">+</button>
+                <span id=T${articulo._id}>${articulo.cantidad}</span>
+                <button class ="botonSumaResta" id="R${articulo._id}">-</button>
+                </div>
+                <div><button id="${articulo._id}" class="btn-close close" aria-label="Close"></button></div>
+                `
 
                 tabla.appendChild(art)
 
-                var contadorDos = contadorUno
+                document.getElementById("S" + articulo._id).addEventListener("click", function (event) {
+
+                    let botonSuma = event.target.id
+
+                    carroDeCompras.forEach((articulo) => {
+                        if (("S" + articulo._id) == botonSuma) {  
+                            if (articulo.stock === articulo.contadorInterno) {
+                                notificacion(`Upss solo quedan ${articulo.stock} unidades`,"error")
+                            }else{
+                                articulo.cantidad = articulo.cantidad + 1
+                                articulo.contadorInterno = articulo.contadorInterno + 1
+                                total = total + articulo.precio
+                                carritoDeCompras ++
+
+                                document.getElementById("T" + articulo._id).innerHTML = `${articulo.contadorInterno}`  
+                                document.getElementById("X" + articulo._id).innerHTML = `x${articulo.contadorInterno}`
+                                document.getElementById("P" + articulo._id).innerHTML = `$${articulo.precio * articulo.contadorInterno}`
+                            }
+                        }
+                    })
+            
+                    totalCalculos(total)
+                    calculos(carritoDeCompras)
+                    localStorage.setItem("respuestaApi", JSON.stringify(repetidos))
+                }) 
+
+                document.getElementById("R" + articulo._id).addEventListener("click", function (event) {
+                    
+                    let botonResta = event.target.id
+
+                    repetidos.forEach((articulo) => {
+                        if (("R" + articulo._id) == botonResta) {    
+                            if (articulo.contadorInterno > 1) {
+                                articulo.cantidad = articulo.cantidad - 1
+                                articulo.contadorInterno = articulo.contadorInterno - 1     
+                                total = total - articulo.precio
+                                carritoDeCompras --
+
+                                document.getElementById("T" + articulo._id).innerHTML = `${articulo.contadorInterno}`  
+                                document.getElementById("X" + articulo._id).innerHTML = `x${articulo.contadorInterno}`
+                                document.getElementById("P" + articulo._id).innerHTML = `$${articulo.precio * articulo.contadorInterno}`  
+                            }
+                        }
+                    })
+
+                    totalCalculos(total)
+                    calculos(carritoDeCompras)
+                    localStorage.setItem("respuestaApi", JSON.stringify(repetidos))
+                })
 
                 document.getElementById(articulo._id).addEventListener("click", function (event) {
 
-                    this.parentElement.parentElement.remove()
+                    let botonCierre = event.target.id
 
-                    if (contadorDos > 0) {
-                        contadorDos = contadorUno - contadorDos
+                    repetidos.forEach((articulo) => {
 
-                        document.getElementById("cart").innerHTML = `Carrito(${contadorDos})`
-                    }
+                        if (articulo._id == botonCierre) {
+                            articulo.valor = true    
+                            articulo.cantidad = 0
+                            carritoDeCompras = carritoDeCompras - articulo.contadorInterno
+                            total = total - (articulo.precio * articulo.contadorInterno) 
+                            articulo.contadorInterno = 0  
+                        }
+                    })
 
+                    totalCalculos(total)
+                    calculos(carritoDeCompras)
+                    dibujarTabla()
+                    localStorage.setItem("respuestaApi", JSON.stringify(repetidos))
                 })
 
             })
         }
     }
+
+    function totalCalculos(numero) {  
+        document.getElementById("total").innerHTML=`$${numero}`
+        localStorage.setItem("total", JSON.stringify(numero))
+    }
+
+    totalCalculos(total) 
 
     //ver mas
 
@@ -268,5 +385,4 @@ function myProgram(data) {
             location.reload()
         }
     })
-
 }
