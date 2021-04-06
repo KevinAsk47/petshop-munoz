@@ -42,22 +42,6 @@ function notificacion(texto,clase) {
     toastElement.show()
 }
 
-var carritoDeCompras = 0
-
-if (localStorage.getItem("cart")) {
-
-    carritoDeCompras = parseInt(localStorage.getItem("cart")) 
-}
-
-function calculos(numero) {
-
-    document.getElementById("cart").innerHTML = `Carrito(${numero})`
-    document.getElementById("cartDos").innerHTML = `Carrito(${numero})`
-    localStorage.setItem("cart", JSON.stringify(numero))
-}
-
-calculos(carritoDeCompras) 
-
 function formulario() {
     const cat = document.getElementById("cat")
     const form = document.getElementById("formulario")
@@ -114,6 +98,13 @@ function myProgram(data) {
     if (localStorage.getItem("respuestaApi")) {
 
         repetidos = JSON.parse(localStorage.getItem("respuestaApi")) 
+    }
+
+    var carritoDeCompras = 0
+
+    if (localStorage.getItem("cart")) {
+
+        carritoDeCompras = parseInt(localStorage.getItem("cart")) 
     }
 
     var total = 0
@@ -355,6 +346,15 @@ function myProgram(data) {
     }
 
     totalCalculos(total) 
+
+    function calculos(numero) {
+
+        document.getElementById("cart").innerHTML = `Carrito(${numero})`
+        document.getElementById("cartDos").innerHTML = `Carrito(${numero})`
+        localStorage.setItem("cart", JSON.stringify(numero))
+    }
+    
+    calculos(carritoDeCompras) 
 
     //ver mas
 

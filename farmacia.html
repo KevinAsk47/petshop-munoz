@@ -23,7 +23,7 @@
           alt="" srcset="">
         <img class="logoPrincipal" src="./img/logito.png" alt="" srcset="">
         <div class="div-carrito">
-          <a href="#"><img class="svg" src="./img/carros.svg" alt="" srcset=""></a>
+          <a href="./carrito.html"><img class="svg" src="./img/carros.svg" alt="" srcset=""></a>
           <p id="cart">Carrito(0)</p>
         </div>
       </div>
@@ -56,20 +56,27 @@
                 </li>
               </ul>
               <div class="dropdown drop">
-                <button class="btn btn-secondary dropdown-toggle" type="button" onclick="prueba()"
-                  id="dropdownMenuButtonCarrito" data-bs-toggle="dropdown" aria-expanded="false">
-                  Ver Articulos
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                  <div id="productos">
-                    <!-- <div id="texto" class="aparecer art"> -->
-                    <!--  <p id="texto" class="art algo">No hay articulos disponibles</p> -->
-                    <!-- </div> -->
-                    <div id="texto-producto">
+                <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas"
+                  data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Ver Articulos</button>
 
-                    </div>
+                <div class="offcanvas offcanvas-end" tabindex="-5" id="offcanvasRight"
+                  aria-labelledby="offcanvasRightLabel">
+                  <div class="offcanvas-header">
+                    <h5 id="offcanvasRightLabel">
+                      <p id="cartDos">Carrito(0)</p>
+                    </h5>
+                    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                      aria-label="Close"></button>
                   </div>
-                </ul>
+                  <div id="productos" class="offcanvas-body">
+
+                  </div>
+                  <div class="total">
+                    <p>TOTAL: <span id="total">$0</span> </p>
+                    <button
+                      style="height: 6vh;width: 10vw; border-radius: 80%;background-color: #ffc749;">Comprar</button>
+                  </div>
+                </div>
               </div>
               <form id="search" class="d-flex">
                 <input id="searchValue" class="form-control me-2" type="search" placeholder="Buscar articulo"
@@ -80,7 +87,6 @@
           </div>
         </nav>
       </nav>
-    </header>
     <main>
       <div class="zona-farmacia">
         <img src="./img/text farmacia (7).png" alt="">
@@ -118,14 +124,8 @@
       </div>
     </footer>
     <div id="epic-toast" class="position-fixed bottom-0 end-0 p-3" style="z-index: 5">
-      <div id="liveToast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="toast-header">
-          <strong class="me-auto">FRANCO PET-SHOP</strong>
-          <small>hace 1 segundo</small>
-        </div>
-        <div class="toast-body" style="color: black;">
-          ¡Se añadió un elemento a tu carrito!
-        </div>
+      <div id="liveToast" class="toast hide position-relative" role="alert" aria-live="polite" aria-atomic="true">
+
       </div>
     </div>
   </div>
